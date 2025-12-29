@@ -15,7 +15,8 @@ class StringSpec:
     length: float
     tension: float
     density: float
-    damping: float
+    damping_rate: float
+    boundary: str
 
 
 @dataclass(frozen=True)
@@ -43,6 +44,7 @@ def attach_strings(
     density_sigma: float,
     damping_mean: float,
     damping_sigma: float,
+    boundary_choices: list[str],
     seed: int | None,
 ) -> StringPopulation:
     rng = make_rng(seed)
@@ -52,16 +54,20 @@ def attach_strings(
     tensions = _draw_lognormal(rng, tension_mean, tension_sigma, n_attach)
     densities = _draw_lognormal(rng, density_mean, density_sigma, n_attach)
     dampings = _draw_lognormal(rng, damping_mean, damping_sigma, n_attach)
+    boundaries = rng.choice(boundary_choices, size=n_attach, replace=True)
     specs = [
         StringSpec(
             anchor=int(anchor),
             length=float(length),
             tension=float(tension),
             density=float(density),
-            damping=float(damping),
+            damping_rate=float(damping),
+            boundary=str(boundary),
         )
-        for anchor, length, tension, density, damping in zip(
-            anchors, lengths, tensions, densities, dampings, strict=True
+        for anchor, length, tension, density, damping, boundary in zip(
+            anchors, lengths, tensions, densities, dampings, boundaries, strict=True
         )
     ]
     return StringPopulation(specs=specs)
+
+

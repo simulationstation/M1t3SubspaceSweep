@@ -4,51 +4,47 @@ from __future__ import annotations
 
 import numpy as np
 
-from alpha_soup_wave.soup.m1_strings import StringPopulation
+from alpha_soup_wave.soup.m1_strings import StringPopulation, StringSpec
 
 
 def string_wave_speed(tension: float, density: float) -> float:
     return float(np.sqrt(tension / density))
 
 
-def string_impedance(tension: float, density: float, damping: float, omega: float) -> float:
-    base = np.sqrt(tension * density)
-    return float(base * (1.0 + damping / (omega + 1e-6)))
+def damping_length(spec: StringSpec) -> float:
+    v = string_wave_speed(spec.tension, spec.density)
+    return float(v / max(spec.damping_rate, 1e-6))
 
 
-def network_impedance(omega: float, eigenfrequencies: np.ndarray) -> float:
-    omega_star = float(np.median(eigenfrequencies))
-    spread = float(np.std(eigenfrequencies) + 1e-6)
-    return float(1.0 / (1.0 + abs(omega - omega_star) / spread))
+def string_modes(spec: StringSpec, mode_count: int) -> np.ndarray:
+    v = string_wave_speed(spec.tension, spec.density)
+    if spec.boundary == "free":
+        n = np.arange(1, mode_count + 1) - 0.5
+    else:
+        n = np.arange(1, mode_count + 1)
+    return n * np.pi * v / spec.length
 
 
-def transmission_coeff(z_net: float | np.ndarray, z_str: float | np.ndarray) -> np.ndarray:
-    z_net_arr = np.asarray(z_net)
-    z_str_arr = np.asarray(z_str)
-    return 4.0 * z_net_arr * z_str_arr / ((z_net_arr + z_str_arr) ** 2)
+def string_linewidths(spec: StringSpec, modes: np.ndarray) -> np.ndarray:
+    return spec.damping_rate * (1.0 + 0.1 * modes / (modes.max() + 1e-6))
 
 
-def leakage_rate(
-    population: StringPopulation,
-    eigenfrequencies: np.ndarray,
-    omega_star: float,
-    weight_sigma: float = 0.3,
-) -> float:
-    omegas = np.linspace(0.5 * omega_star, 1.5 * omega_star, 64)
-    weights = np.exp(-0.5 * ((omegas - omega_star) / weight_sigma) ** 2)
-    weights /= weights.sum()
-    total = 0.0
-    for spec in population.specs:
-        z_str = np.array([string_impedance(spec.tension, spec.density, spec.damping, o) for o in omegas])
-        z_net = np.array([network_impedance(o, eigenfrequencies) for o in omegas])
-        transmissions = transmission_coeff(z_net, z_str)
-        total += float(np.sum(weights * transmissions))
-    return float(total)
-
-
-def string_mode_spacing(population: StringPopulation) -> np.ndarray:
+def string_mode_spacing(population: StringPopulation, mode_count: int) -> np.ndarray:
     spacings = []
     for spec in population.specs:
-        v = string_wave_speed(spec.tension, spec.density)
-        spacings.append(np.pi * v / spec.length)
+        modes = string_modes(spec, mode_count)
+        if len(modes) > 1:
+            spacings.append(float(np.median(np.diff(modes))))
     return np.array(spacings)
+
+
+def lorentzian_density(omega_grid: np.ndarray, centers: np.ndarray, widths: np.ndarray) -> np.ndarray:
+    density = np.zeros_like(omega_grid)
+    for center, width in zip(centers, widths, strict=True):
+        gamma = max(width, 1e-6)
+        density += gamma**2 / ((omega_grid - center) ** 2 + gamma**2)
+    if density.max() > 0:
+        density /= density.max()
+    return density
+
+
