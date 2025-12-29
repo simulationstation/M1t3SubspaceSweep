@@ -1,56 +1,71 @@
 {
-  "grid": {
-    "network": {
-      "n3": [200],
-      "degree2_fraction": [0.0, 0.05],
-      "coupling_j": [0.8, 1.0, 1.2],
-      "temperature": [0.3, 0.4, 0.5],
-      "metropolis_steps": 2000
+  "model": {
+    "m3": {
+      "n3": 60,
+      "generator": "triangle_boosted",
+      "min_short_cycle_ratio": 0.05,
+      "triangle_boost_steps": 120,
+      "geometric_radius": 0.4,
+      "planted_cycle_count": 4
     },
     "m2": {
-      "coherence_threshold": [0.65, 0.7, 0.75],
-      "loopiness_threshold": [0.08, 0.12],
-      "min_size": 30
+      "mode": "emergent",
+      "min_fraction": 0.1,
+      "coherence_threshold": 0.4,
+      "loopiness_threshold": 0.05,
+      "constructed_strength": 1.4,
+      "boundary_strength": 0.3
     },
-    "strings": {
-      "anchor_fraction": 0.25,
-      "length_mean": [4.0, 5.0, 6.0, 7.0],
-      "length_sigma": 0.6,
-      "tension_mean": 1.4,
-      "density_mean": 0.9,
-      "damping_mean": [0.05, 0.08, 0.12],
-      "boundary_choices": ["fixed", "free"],
-      "mode_count": 6
+    "m1": {
+      "anchor_fraction": 0.3,
+      "path_count": 20,
+      "length_mean": 4.0,
+      "length_sigma": 0.8,
+      "loop_fraction": 0.4,
+      "loopback_fraction": 0.2,
+      "attenuation_length": 7.0,
+      "edge_loss": 0.08,
+      "max_path_edges": 4
     },
-    "spectral": {
-      "omega_max_factor": 2.5,
-      "grid_size": 140,
-      "kernel_sigma": 0.22,
-      "weight_scale": 1.0
+    "physics": {
+      "omega_min": 0.8,
+      "omega_max": 2.6,
+      "omega_points": 32,
+      "k_scale": 1.0,
+      "damping_m1": 0.12,
+      "damping_m2": 0.08,
+      "damping_m3": 0.05
     },
-    "mechanisms": {
-      "attenuation_weight_m2": true,
-      "enable_selection": true,
-      "enable_gating": true
-    },
-    "selection": {
-      "scale": 0.35
+    "coupling": {
+      "j3": 1.0,
+      "j2": 1.2,
+      "j23": 0.35,
+      "drive_strength": 1.0,
+      "drive_fraction": 0.2
     },
     "gate": {
-      "coherence_gate": 0.75,
-      "resonance_k": 2,
-      "resonance_eps": 0.12,
-      "samples": 6
+      "enable": true,
+      "coherence_min": 0.6,
+      "resonance_min": 0.4
     }
   },
   "sweep": {
-    "seeds": [0, 1, 2],
-    "perturbation_fraction": 0.05,
-    "tolerance_log": 0.25,
-    "max_configs": 320,
-    "top_k": 30,
-    "refine_seeds": 10,
-    "refine_neighborhood_samples": 10,
-    "max_workers": null
+    "seeds": [0, 1, 2, 3, 4],
+    "config_count": 6,
+    "param_grid": {
+      "m3.generator": ["triangle_boosted", "geometric"],
+      "m2.mode": ["emergent", "constructed"],
+      "m1.length_mean": [3.6, 4.4]
+    },
+    "objective": {
+      "weight_log_q": 1.0,
+      "weight_m2_instability": 0.7,
+      "weight_seed_std": 0.4,
+      "weight_neighborhood": 0.3,
+      "weight_alpha_distance": 0.1,
+      "q_tolerance": 0.25
+    },
+    "neighborhood_samples": 5,
+    "neighborhood_perturb": 0.05
   }
 }
