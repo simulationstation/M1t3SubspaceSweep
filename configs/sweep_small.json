@@ -1,0 +1,25 @@
+{
+  "sweep": {
+    "n_nodes": [200],
+    "frac_deg3": [0.7, 0.75],
+    "frac_deg2": [0.15, 0.2],
+    "j3": [1.2, 1.5],
+    "j2": [0.6, 0.9],
+    "j1": [0.3],
+    "g23": [0.08, 0.12],
+    "g21": [0.06, 0.1],
+    "temperature": [0.5, 0.7],
+    "coherence_thresh": [0.6, 0.7],
+    "loop_thresh": [0.2, 0.3]
+  },
+  "search": {
+    "seeds_per_point": 2,
+    "top_k": 4,
+    "alpha_tolerance": 0.2,
+    "neighborhood_perturb": 0.08,
+    "neighborhood_samples": 4,
+    "require_stable_points": 2,
+    "max_workers": null
+  },
+  "fast_mode_steps": 120
+}
