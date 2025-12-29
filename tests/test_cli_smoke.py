@@ -1,10 +1,13 @@
+import subprocess
+import sys
 from pathlib import Path
 
-from alpha_soup.cli import demo
 
-
-def test_cli_demo(tmp_path: Path):
+def test_cli_demo_smoke(tmp_path: Path):
     out_dir = tmp_path / "demo"
-    demo(str(out_dir))
-    assert (out_dir / "configs_used.json").exists()
+    subprocess.run(
+        [sys.executable, "-m", "alpha_soup_wave.cli", "demo", "--out", str(out_dir)],
+        check=True,
+    )
+    assert (out_dir / "results.csv").exists()
     assert (out_dir / "figures" / "soup_best.png").exists()

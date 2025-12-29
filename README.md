@@ -1,31 +1,37 @@
-# Alpha Soup
+# Alpha Soup Wave (v2)
 
-This repository simulates a degree-stratified computing "soup" (M3/M2/M1 analogs) and searches for regimes where an emergent ratio of internal scales matches the fine-structure constant target (α ≈ 1/137). The implementation uses an XY-like phase model, degree-stratified couplings, emergent M2 detection via coherence/closure, and a search pipeline with robustness checks.
+This repository simulates an overlapping substrate "soup" with:
+
+- **M3**: degree-3 backbone network.
+- **M2**: emergent coherent/loop-closed subset.
+- **M1**: degree-1 strings (1D waveguides) attached to anchors.
+
+Coupling is mediated by impedance mismatch and resonance. The pipeline searches for emergent ratios of internal scales that approximate the fine-structure constant (without hardcoding it).
 
 ## Quick start
 
 ```bash
 poetry install
-poetry run alpha-soup demo --out outputs/demo
+poetry run alpha-wave demo --out outputs/demo
 ```
 
-## CLI commands
+## CLI
 
 ```bash
-alpha-soup demo --out outputs/demo
-alpha-soup sweep --config configs/sweep_small.json --out outputs/sweep_small
-alpha-soup refine --in outputs/sweep_small --out outputs/refined
-alpha-soup report --in outputs/refined --out outputs/refined/report.md
+alpha-wave demo --out outputs/demo
+alpha-wave sweep --out outputs/sweep_small
+alpha-wave refine --in outputs/sweep_small --out outputs/refined
+alpha-wave report --in outputs/refined
 ```
 
 ## Outputs
 
-Each run writes to `outputs/run_<timestamp>/` (or the specified output path) including:
+Each run writes to the output directory (or `outputs/run_<timestamp>/`) containing:
 
-- `configs_used.json` and `results.csv`
+- `results.csv`
 - `best_candidates.json`
-- `figures/` containing `soup_best.png`, `alpha_scatter.png`, `robustness.png`
 - `report.md`
+- `figures/` with `soup_best.png`, `alpha_hist.png`, `robustness.png`
 
 ## Tests
 
