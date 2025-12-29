@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "alpha-soup"
+version = "0.1.0"
+description = "Simulate a degree-stratified computing soup and search for emergent alpha from internal scales."
+authors = ["Codex <codex@example.com>"]
+readme = "README.md"
+packages = [{ include = "alpha_soup", from = "src" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+numpy = "^1.26.4"
+scipy = "^1.11.4"
+networkx = "^3.2.1"
+matplotlib = "^3.8.2"
+pydantic = "^2.6.1"
+pandas = "^2.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+
+[tool.poetry.extras]
+optuna = ["optuna>=3.5.0"]
+
+[tool.poetry.scripts]
+alpha-soup = "alpha_soup.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = "-q"
