@@ -1,5 +1,11 @@
-from alpha_soup_wave.cli import demo
+from pathlib import Path
+
+from alpha_em_soup.cli import main
 
 
 if __name__ == "__main__":
-    demo("outputs/demo")
+    import sys
+
+    output = Path("outputs/demo")
+    sys.argv = ["alpha-em", "demo", "--out", str(output)]
+    main()

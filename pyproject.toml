@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "alpha-soup-wave"
-version = "0.2.0"
+name = "alpha-em-soup"
+version = "0.4.0"
 description = "Simulate an overlapping substrate soup and search for emergent alpha from internal scales."
 authors = ["Codex <codex@example.com>"]
 readme = "README.md"
-packages = [{ include = "alpha_soup_wave", from = "src" }]
+packages = [{ include = "alpha_em_soup", from = "src" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
@@ -22,8 +22,7 @@ pytest = "^8.0.0"
 optuna = ["optuna"]
 
 [tool.poetry.scripts]
-alpha-wave = "alpha_soup_wave.cli:main"
-alpha-soup-wave = "alpha_soup_wave.cli:main"
+alpha-em = "alpha_em_soup.cli:main"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,22 +1,11 @@
-import subprocess
 import sys
 from pathlib import Path
 
+from alpha_em_soup import cli
 
-def test_cli_demo_smoke(tmp_path: Path):
+
+def test_cli_smoke(tmp_path: Path, monkeypatch):
     out_dir = tmp_path / "demo"
-    subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "alpha_soup_wave.cli",
-            "demo",
-            "--config",
-            "configs/sweep_small.json",
-            "--out",
-            str(out_dir),
-        ],
-        check=True,
-    )
-    assert (out_dir / "results.csv").exists()
-    assert (out_dir / "figures" / "soup_best.png").exists()
+    monkeypatch.setattr(sys, "argv", ["alpha-em", "demo", "--out", str(out_dir)])
+    cli.main()
+    assert (out_dir / "summary.csv").exists()

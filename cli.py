@@ -1,6 +1,6 @@
-"""Root CLI wrapper for alpha soup wave."""
+"""Root CLI wrapper for alpha EM soup."""
 
-from alpha_soup_wave.cli import main
+from alpha_em_soup.cli import main
 
 
 if __name__ == "__main__":
