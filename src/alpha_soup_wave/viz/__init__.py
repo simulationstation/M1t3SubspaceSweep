@@ -1,1 +1,2 @@
-"""Visualization utilities."""
+"""Visualization package for alpha soup wave."""
+

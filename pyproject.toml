@@ -23,6 +23,7 @@ optuna = ["optuna"]
 
 [tool.poetry.scripts]
 alpha-wave = "alpha_soup_wave.cli:main"
+alpha-soup-wave = "alpha_soup_wave.cli:main"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,16 +1,16 @@
 {
   "grid": {
     "network": {
-      "n3": [200],
+      "n3": [200, 400],
       "degree2_fraction": [0.0, 0.05],
       "coupling_j": [0.8, 1.0, 1.2],
       "temperature": [0.3, 0.4, 0.5],
-      "metropolis_steps": 2000
+      "metropolis_steps": 2500
     },
     "m2": {
       "coherence_threshold": [0.65, 0.7, 0.75],
       "loopiness_threshold": [0.08, 0.12],
-      "min_size": 30
+      "min_size": null
     },
     "strings": {
       "anchor_fraction": 0.25,
@@ -47,7 +47,7 @@
     "seeds": [0, 1, 2],
     "perturbation_fraction": 0.05,
     "tolerance_log": 0.25,
-    "max_configs": 320,
+    "max_configs": 1100,
     "top_k": 30,
     "refine_seeds": 10,
     "refine_neighborhood_samples": 10,

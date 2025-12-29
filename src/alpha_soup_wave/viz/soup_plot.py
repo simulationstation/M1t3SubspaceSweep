@@ -29,11 +29,9 @@ def plot_soup(
     seed: int | None = 0,
 ) -> plt.Axes:
     if ax is None:
-        _, ax = plt.subplots(figsize=(6, 6))
+        _, ax = plt.subplots(figsize=(7, 7))
     pos = nx.spring_layout(graph, seed=seed)
-    node_colors = []
-    for node in graph.nodes:
-        node_colors.append(M2_COLOR if node in m2_nodes else M3_COLOR)
+    node_colors = [M2_COLOR if node in m2_nodes else M3_COLOR for node in graph.nodes]
     nx.draw_networkx_nodes(graph, pos, node_color=node_colors, ax=ax, node_size=80)
     nx.draw_networkx_edges(graph, pos, ax=ax, alpha=0.6)
     if strings.specs:
@@ -49,4 +47,19 @@ def plot_soup(
             )
             ax.scatter([string_pos[0]], [string_pos[1]], color=M1_COLOR, s=30)
     ax.set_axis_off()
+
+    m3_count = graph.number_of_nodes()
+    m2_count = len(m2_nodes)
+    m1_count = len(strings.specs)
+    ax.legend(
+        handles=[
+            plt.Line2D([0], [0], marker="o", color="w", label=f"M3 nodes: {m3_count}", markerfacecolor=M3_COLOR),
+            plt.Line2D([0], [0], marker="o", color="w", label=f"M2 nodes: {m2_count}", markerfacecolor=M2_COLOR),
+            plt.Line2D([0], [0], color=M1_COLOR, label=f"M1 strings: {m1_count}"),
+        ],
+        loc="upper right",
+        frameon=True,
+    )
     return ax
+
+
