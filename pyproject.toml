@@ -19,7 +19,7 @@ pandas = "^2.2.0"
 pytest = "^8.0.0"
 
 [tool.poetry.extras]
-optuna = ["optuna>=3.5.0"]
+optuna = ["optuna"]
 
 [tool.poetry.scripts]
 alpha-wave = "alpha_soup_wave.cli:main"
